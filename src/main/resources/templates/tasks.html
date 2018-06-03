@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+
+    <style type="text/css">
+        .login-form {
+            width: 340px;
+            margin: 50px auto;
+        }
+
+        .login-form form {
+            margin-bottom: 15px;
+            background: #f7f7f7;
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+        }
+
+        .login-form h2 {
+            margin: 0 0 15px;
+        }
+
+        .form-control, .btn {
+            min-height: 38px;
+            border-radius: 2px;
+        }
+
+        .btn {
+            font-size: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+
+<div class="container">
+    <a th:if="${isAdmin}" th:href="${'/admin/add/'}"><span class="glyphicon glyphicon-plus"></span></a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>name</th>
+            <th>description</th>
+            <th>status</th>
+            <th>user name</th>
+            <th th:if="${isAdmin}">edit</th>
+            <th th:if="${isAdmin}">delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tasks}">
+            <td th:text="${task.name}">1</td>
+            <td th:text="${task.description}">Doe</td>
+            <td th:text="${task.status}">John</td>
+            <td th:if="${task.user}" th:text="${task.user.firstName}">John</td>
+            <td th:unless="${task.user}" >-</td>
+            <td th:if="${isAdmin}" ><a th:href="${'/admin/edit/'+ task.id}"><span class="glyphicon glyphicon-pencil"></span></a></td>
+            <td th:if="${isAdmin}"><a th:href="${'/admin/delete/'+ task.id}"><span class="glyphicon glyphicon-remove"></span></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>
